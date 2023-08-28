@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "putils",
+  "version": "${version}",
+  "name": "putils",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/epime/putild"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/putils/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "promej.putils.pro.putils.Putils"
+    ]
+  },
+  "mixins": [
+    "putils.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
