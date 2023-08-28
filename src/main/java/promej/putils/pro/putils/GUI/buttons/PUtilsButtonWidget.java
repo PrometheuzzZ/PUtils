@@ -21,7 +21,7 @@ import net.minecraft.util.Identifier;
 
 @Environment(value= EnvType.CLIENT)
 public class PUtilsButtonWidget extends TexturedButtonWidget {
-    private static final Identifier TEXTURE_MAIN = new Identifier("textures/gui/test_button.png");
+    private static final Identifier TEXTURE_MAIN = new Identifier("textures/gui/button.png");
     private String descript;
     private int line;
     private int row;

@@ -1,33 +1,34 @@
 package promej.putils.pro.putils;
 
-import io.github.cottonmc.cotton.gui.GuiDescription;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import promej.putils.pro.putils.GUI.FastMenu;
 import promej.putils.pro.putils.GUI.buttons.PUtilsButtonWidget;
 import promej.putils.pro.putils.GUI.screen.PUtilsScreen;
 import promej.putils.pro.putils.handlers.JoinServerHandler;
+import promej.putils.pro.putils.sounds.ModSounds;
 
 public class Putils implements ModInitializer {
     @Override
     public void onInitialize() {
-
+        ModSounds.init();
         ClientPlayConnectionEvents.JOIN.register(new JoinServerHandler());
+       //ServerMessageEvents.CHAT_MESSAGE.register(new ChatHandler());
 
         ScreenEvents.AFTER_INIT.register((minecraftClient, screen, width, height) -> {
 
             if (screen instanceof HandledScreen) {
 
 
+                //Items items = Item.byRawId(1);
 
                 PUtilsButtonWidget enderOpenButtonWidget = new PUtilsButtonWidget((HandledScreen)screen, 0, 0, "Эндер-сундук", Items.ENDER_CHEST, button ->  MinecraftClient.getInstance().player.networkHandler.sendChatCommand("ender") );
                 PUtilsButtonWidget workbenchButtonWidget = new PUtilsButtonWidget((HandledScreen)screen, 1, 0, "Верстак", Items.CRAFTING_TABLE, pressActionCommand("workbench"));

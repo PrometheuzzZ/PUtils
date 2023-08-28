@@ -1,0 +1,233 @@
+package promej.putils.pro.putils.mixin;
+
+import blue.endless.jankson.annotation.Nullable;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.inventory.Inventory;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+@Mixin(value={HandledScreen.class}, priority=1)
+public abstract class InventoryHandler {
+    private static final Item[] SHULKER_BOX_ITEMS = new Item[]{class_1802.field_8545, class_1802.field_8722, class_1802.field_8380, class_1802.field_8050, class_1802.field_8829, class_1802.field_8271, class_1802.field_8548, class_1802.field_8520, class_1802.field_8627, class_1802.field_8451, class_1802.field_8213, class_1802.field_8816, class_1802.field_8350, class_1802.field_8584, class_1802.field_8461, class_1802.field_8676, class_1802.field_8268};
+
+    @Shadow
+    @Nullable
+    protected abstract class_1735 method_2386(double var1, double var3);
+
+    @Inject(method={"mouseClicked"}, at={@At(value="HEAD")}, cancellable=true)
+    private void injected(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
+        block23: {
+            Inventory inventory = MinecraftClient.getInstance().player.getInventory();
+            class_1735 slot2 = this.method_2386(mouseX, mouseY);
+            try {
+                if (!slot2.method_7681() || button != 2) break block23;
+                class_1799 itemStack = slot2.method_7677();
+                if (itemStack.method_7929(new class_1799((class_1935)class_1802.field_8849))) {
+                    class_2487 nbt = itemStack.method_7969();
+                    String spawnDate = nbt.method_10562("BlockEntityTag").method_10562("SpawnData").method_10562("entity").method_10558("id");
+                    class_2499 loreList = new class_2499();
+                    if (spawnDate.contains("blaze")) {
+                        spawnDate = "Ифрит";
+                    } else if (spawnDate.contains("magma_cube")) {
+                        spawnDate = "Магмовый куб";
+                    } else if (spawnDate.contains("zombie")) {
+                        spawnDate = "Зомби";
+                    } else if (spawnDate.contains("skeleton")) {
+                        spawnDate = "Скелет";
+                    } else if (spawnDate.contains("cave_spider")) {
+                        spawnDate = "Ядовитый паук";
+                    } else if (spawnDate.contains("spider")) {
+                        spawnDate = "Обычный паук";
+                    }
+                    loreList.add((Object)class_2519.method_23256((String)("{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"white\",\"text\":\"Тип моба: " + spawnDate + "\"}],\"text\":\"\"}")));
+                    itemStack.method_7969().method_10562("display").method_10566("Lore", (class_2520)loreList);
+                    break block23;
+                }
+                if (InventoryHandler.isShalker(itemStack)) {
+                    List<class_1799> itemStacks = InventoryHandler.getItemsInContainer(itemStack);
+                    if (itemStacks.size() > 0) {
+                        for (int i = 0; i < itemStacks.size(); ++i) {
+                            inventory.method_5447(i + 9, itemStacks.get(i));
+                        }
+                    }
+                    break block23;
+                }
+                if (itemStack.method_7929(new class_1799((class_1935)class_1802.field_8360))) {
+                    MinecraftClient.getInstance().setScreen((Screen)new class_3872(class_3872.class_3931.method_17562((class_1799)itemStack)));
+                    break block23;
+                }
+                if (itemStack.method_7929(new class_1799((class_1935)class_1802.field_8674))) {
+                    MinecraftClient.getInstance().setScreen((Screen)new class_473((class_1657)MinecraftClient.getInstance().player, itemStack, class_1268.field_5810));
+                    break block23;
+                }
+                if (itemStack == null) break block23;
+                class_2487 nbt = itemStack.method_7969();
+                String lorePlus = "нет";
+                String displayPlus = "нет";
+                try {
+                    if (nbt.method_10545("ModifiedLore")) {
+                        lorePlus = "да";
+                    }
+                    if (nbt.method_10545("ModifiedName")) {
+                        displayPlus = "да";
+                    }
+                }
+                catch (Exception exception) {
+                    // empty catch block
+                }
+                class_2499 loreList = new class_2499();
+                loreList.add((Object)class_2519.method_23256((String)("{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"white\",\"text\":\"ItemName: " + displayPlus + "\"}],\"text\":\"\"}")));
+                loreList.add((Object)class_2519.method_23256((String)("{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"white\",\"text\":\"ItemLore: " + lorePlus + "\"}],\"text\":\"\"}")));
+                itemStack.method_7969().method_10562("display").method_10566("Lore", (class_2520)loreList);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static List<class_1799> getItemsInContainer(class_1799 item) {
+        class_2487 blockEntityTag;
+        ArrayList<class_1799> items = new ArrayList<class_1799>(Collections.nCopies(27, new class_1799((class_1935)class_1802.field_8162)));
+        class_2487 nbt = item.method_7969();
+        if (nbt != null && nbt.method_10545("BlockEntityTag") && (blockEntityTag = nbt.method_10562("BlockEntityTag")).method_10545("Items")) {
+            class_2499 itemList = blockEntityTag.method_10554("Items", 10);
+            for (int i = 0; i < itemList.size(); ++i) {
+                boolean book = false;
+                class_2487 itemNbt = itemList.method_10602(i);
+                class_2487 itemTag = itemNbt.method_10562("tag");
+                String itemId = itemNbt.method_10558("id");
+                if (itemTag.method_10550("HideFlags") != 127) {
+                    try {
+                        class_2499 enchantments;
+                        if (itemId.contains("minecraft:enchanted_book")) {
+                            enchantments = itemTag.method_10554("StoredEnchantments", 10);
+                            itemTag.method_10551("StoredEnchantments");
+                            book = true;
+                        } else {
+                            enchantments = itemNbt.method_10562("tag").method_10554("Enchantments", 10);
+                        }
+                        itemTag.method_10569("HideFlags", 127);
+                        class_2499 LoreList = new class_2499();
+                        for (int j = 0; j < enchantments.size(); ++j) {
+                            class_2487 enchant = enchantments.method_10602(j);
+                            Object enchantID = enchant.method_10558("id").toString();
+                            String loreColore = "white";
+                            if (EnchantReplace.getString(((String)enchantID).split(":")[1]) != null) {
+                                enchantID = EnchantReplace.getString(((String)enchantID).split(":")[1]);
+                                loreColore = ((String)enchantID).split(":")[1];
+                                enchantID = ((String)enchantID).split(":")[0];
+                            } else if (((String)enchantID).contains("artifact")) {
+                                enchantID = "Артефакт";
+                                loreColore = "#E2E47D";
+                            } else {
+                                enchantID = ((String)enchantID).split(":")[1] + " (Не переведено)";
+                            }
+                            String enchantLVL = book ? String.valueOf(enchant.method_10568("lvl")) : String.valueOf(enchant.method_10550("lvl"));
+                            enchantLVL = InventoryHandler.getEnchantLevelStr(enchantLVL);
+                            if (((String)enchantID).contains("Артефакт")) {
+                                enchantLVL = " ";
+                            }
+                            String enchantStr = (String)enchantID + " " + enchantLVL;
+                            class_2519 loreEnchant = class_2519.method_23256((String)("{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"" + loreColore + "\",\"text\":\"" + enchantStr + "\"}],\"text\":\"\"}"));
+                            if (loreColore.contains("gray")) {
+                                LoreList.method_10531(0, (class_2520)loreEnchant);
+                                continue;
+                            }
+                            LoreList.add((Object)loreEnchant);
+                        }
+                        class_2499 loreStore = itemTag.method_10562("display").method_10554("Lore", 8);
+                        if (loreStore.size() > 0) {
+                            LoreList.add((Object)class_2519.method_23256((String)"{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\" \"}],\"text\":\"\"}"));
+                            LoreList.add((Object)class_2519.method_23256((String)"{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"gray\",\"text\":\"Лор:\"}],\"text\":\"\"}"));
+                            for (int j = 0; j < loreStore.size(); ++j) {
+                                LoreList.method_10531(LoreList.size(), (class_2520)class_2519.method_23256((String)loreStore.method_10608(j)));
+                            }
+                        }
+                        if (itemTag.method_10545("display")) {
+                            itemTag.method_10562("display").method_10566("Lore", (class_2520)LoreList);
+                        } else {
+                            itemTag.method_10566("display", (class_2520)new class_2487());
+                            itemTag.method_10562("display").method_10566("Lore", (class_2520)LoreList);
+                        }
+                    }
+                    catch (Exception enchantments) {
+                        // empty catch block
+                    }
+                }
+                class_1799 s = class_1799.method_7915((class_2487)itemNbt);
+                items.set(itemList.method_10602(i).method_10571("Slot"), s);
+            }
+        }
+        return items;
+    }
+
+    private static boolean isShalker(class_1799 itemStack) {
+        for (Item item : SHULKER_BOX_ITEMS) {
+            if (!itemStack.method_7929(new class_1799((class_1935)item))) continue;
+            return true;
+        }
+        return false;
+    }
+
+    private static String getEnchantLevelStr(String lvl) {
+        String enchantLVL = "I";
+        switch (lvl) {
+            case "1": {
+                enchantLVL = "I";
+                break;
+            }
+            case "2": {
+                enchantLVL = "II";
+                break;
+            }
+            case "3": {
+                enchantLVL = "III";
+                break;
+            }
+            case "4": {
+                enchantLVL = "IV";
+                break;
+            }
+            case "5": {
+                enchantLVL = "V";
+                break;
+            }
+            case "6": {
+                enchantLVL = "VI";
+                break;
+            }
+            case "7": {
+                enchantLVL = "VII";
+                break;
+            }
+            case "8": {
+                enchantLVL = "VIII";
+                break;
+            }
+            case "9": {
+                enchantLVL = "IX";
+                break;
+            }
+            case "10": {
+                enchantLVL = "X";
+                break;
+            }
+            default: {
+                enchantLVL = "I";
+            }
+        }
+        return enchantLVL;
+    }
+
+    private static String removeLastNchars(String str, int n) {
+        if (str == null || str.length() < n) {
+            return str;
+        }
+        return str.substring(0, str.length() - n);
+    }
+}

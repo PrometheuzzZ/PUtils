@@ -1,0 +1,27 @@
+{
+  "new_message_pm": {
+    "subtitle": "sounds.putils.new_message_pm",
+    "sounds": [
+      "putils:new_message_pm"
+    ]
+  },
+  "new_money_pm": {
+    "subtitle": "sounds.putils.new_money_pm",
+    "sounds": [
+      "putils:new_money_pm"
+    ]
+  },
+  "new_global_pm": {
+    "subtitle": "sounds.putils.new_global_pm",
+    "sounds": [
+      "putils:new_global_pm"
+    ]
+  },
+  "welcome": {
+    "subtitle": "sounds.putils.welcome",
+    "sounds": [
+      "putils:welcome"
+    ]
+  }
+
+}
