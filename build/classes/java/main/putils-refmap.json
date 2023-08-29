@@ -2,12 +2,18 @@
   "mappings": {
     "promej/putils/pro/putils/mixin/ChatHandler": {
       "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;ILnet/minecraft/client/gui/hud/MessageIndicator;Z)V": "Lnet/minecraft/class_338;method_1815(Lnet/minecraft/class_2561;Lnet/minecraft/class_7469;ILnet/minecraft/class_7591;Z)V"
+    },
+    "promej/putils/pro/putils/mixin/InventoryHandler": {
+      "mouseClicked": "Lnet/minecraft/class_465;method_25402(DDI)Z"
     }
   },
   "data": {
     "named:intermediary": {
       "promej/putils/pro/putils/mixin/ChatHandler": {
         "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;ILnet/minecraft/client/gui/hud/MessageIndicator;Z)V": "Lnet/minecraft/class_338;method_1815(Lnet/minecraft/class_2561;Lnet/minecraft/class_7469;ILnet/minecraft/class_7591;Z)V"
+      },
+      "promej/putils/pro/putils/mixin/InventoryHandler": {
+        "mouseClicked": "Lnet/minecraft/class_465;method_25402(DDI)Z"
       }
     }
   }

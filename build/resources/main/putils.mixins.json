@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AccessorHandledScreen",
-    "ChatHandler"
+    "ChatHandler",
+    "InventoryHandler"
   ],
   "client": [],
   "injectors": {

@@ -11,7 +11,9 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,6 +30,8 @@ public class PUtilsButtonWidget extends TexturedButtonWidget {
     private final HandledScreen<?> screen;
     private Item itemIco;
 
+    private PressAction onPress;
+
     public PUtilsButtonWidget(HandledScreen<?> screen, int buttonIndex, int row, String descript, Item items, PressAction pressAction) {
         super(0, 0, 20, 20, 0, 0, 20, TEXTURE_MAIN, 20, 40, pressAction);
         this.line = buttonIndex;
@@ -35,7 +39,11 @@ public class PUtilsButtonWidget extends TexturedButtonWidget {
         this.screen = screen;
         this.itemIco = items;
         this.row = row;
+        this.setX(getX(screen));
+        this.setY(getY(screen));
     }
+
+
 
     public int getX(HandledScreen<?> screen) {
         int invOffset = 1;
@@ -76,7 +84,6 @@ public class PUtilsButtonWidget extends TexturedButtonWidget {
     }
 
 
-
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.reposition();
         boolean bl = this.hovered = mouseX >= this.getX(this.screen) && mouseY >= this.getY(this.screen) && mouseX < this.getX(this.screen) + this.width && mouseY < this.getY(this.screen) + this.height;
@@ -85,10 +92,11 @@ public class PUtilsButtonWidget extends TexturedButtonWidget {
         }
         if (this.isMouseOver(mouseX, mouseY)) {
             int offset = 0;
-            context.drawText(MinecraftClient.getInstance().textRenderer, Text.literal(this.descript),mouseX - offset, mouseY, 4210752, false);
-          //  this.screen.(matrices, Text.literal(this.descript), mouseX - offset, mouseY);
+            context.drawTooltip(MinecraftClient.getInstance().textRenderer, Text.literal(this.descript),mouseX - offset, mouseY);
+            //  this.screen.(matrices, Text.literal(this.descript), mouseX - offset, mouseY);
         }
     }
+
 
     public void reposition() {
         if (MinecraftClient.getInstance().player != null) {
@@ -98,8 +106,8 @@ public class PUtilsButtonWidget extends TexturedButtonWidget {
 
     @Override
     public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
-       // RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-       //RenderSystem.setShaderTexture(0, TEXTURE_MAIN);
+        //RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+        //RenderSystem.setShaderTexture(0, ButtonWidget.TEXTURE_MAIN);
         int offset = 0;
         if (this.isHovered()) {
             offset = 20;
@@ -108,7 +116,7 @@ public class PUtilsButtonWidget extends TexturedButtonWidget {
 
         this.drawTexture(context, TEXTURE_MAIN, (int)this.getX(this.screen), (int)this.getY(this.screen), 0, 0, offset, this.width, this.height, 20, 40);
 
-        ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
+
         if (this.itemIco == Items.ENDER_CHEST) {
             context.drawItem(new ItemStack(this.itemIco), this.getX(this.screen) + 2, this.getY(this.screen) + 2);
             context.drawItem(new ItemStack(this.itemIco), this.getX(this.screen) + 2, this.getY(this.screen) + 2);

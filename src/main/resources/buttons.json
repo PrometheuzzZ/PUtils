@@ -1,0 +1,14 @@
+{
+  "buttons":[
+    {
+      "name":"test",
+      "command":"asd",
+      "item_id":123
+    },
+    {
+      "name":"test",
+      "command":"asd",
+      "item_id":123
+    }
+  ]
+}
