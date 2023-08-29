@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -100,7 +101,9 @@ public class SimpleConfig {
         Scanner reader = new Scanner( request.file );
         String allConfig = "";
         for( int line = 1; reader.hasNextLine(); line ++ ) {
-            allConfig += reader.nextLine();
+            byte[] contents = reader.nextLine().getBytes(StandardCharsets.UTF_16);
+            String s = new String(contents, StandardCharsets.UTF_8);
+            allConfig += s;
         }
         config.put( "BUTTONS", allConfig );
     }

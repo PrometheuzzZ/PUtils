@@ -3,6 +3,9 @@ plugins {
     id 'maven-publish'
 }
 
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
 version = project.mod_version
 group = project.maven_group
 
@@ -82,4 +85,8 @@ publishing {
         // The repositories here will be used for publishing your artifact, not for
         // retrieving dependencies.
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }

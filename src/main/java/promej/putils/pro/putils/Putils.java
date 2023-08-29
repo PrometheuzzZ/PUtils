@@ -8,6 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.item.Item;
+import net.minecraft.text.Text;
 import promej.putils.pro.putils.GUI.buttons.PUtilsButtonWidget;
 import promej.putils.pro.putils.GUI.screen.PUtilsScreen;
 import promej.putils.pro.putils.config.ButtonsConfig;
@@ -16,6 +17,8 @@ import promej.putils.pro.putils.config.buttons.PUButtonsList;
 import promej.putils.pro.putils.config.buttons.PUButton;
 import promej.putils.pro.putils.handlers.JoinServerHandler;
 import promej.putils.pro.putils.sounds.ModSounds;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Putils implements ModInitializer {
 
@@ -50,6 +53,9 @@ public class Putils implements ModInitializer {
                         index = 0;
                         row++;
                     }
+
+
+                    MinecraftClient.getInstance().player.sendMessage(Text.literal(pubutton.getName()));
                     PUtilsButtonWidget buttonWidget = new PUtilsButtonWidget((HandledScreen)screen, index, row, pubutton.getName(), Item.byRawId(pubutton.getItemId()), button ->  MinecraftClient.getInstance().player.networkHandler.sendChatCommand(pubutton.getCommand()));
                     Screens.getButtons(screen).add(buttonWidget);
                     index++;
