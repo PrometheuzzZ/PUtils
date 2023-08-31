@@ -19,11 +19,14 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import promej.putils.pro.putils.Putils;
 import promej.putils.pro.putils.utils.EnchantReplace;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static promej.putils.pro.putils.Putils.mc;
 
 @Mixin(value={HandledScreen.class}, priority=1)
 public abstract class InventoryHandler {
@@ -42,6 +45,30 @@ public abstract class InventoryHandler {
                 NbtList loreList = new NbtList();
 
                 Slot slot2 = this.getSlotAt(mouseX, mouseY);
+               // System.out.println(slot2.id);
+
+
+                if (slot2.id == 1  && button == 0){
+
+                    ItemStack mainHand = slot2.getStack();
+
+                    if(mainHand != null){
+                        String itemName = mainHand.getItem().getName().toString().split("minecraft.")[1].split("',")[0];
+                        int rawId = Item.getRawId(mainHand.getItem());
+
+
+                            if(!(itemName.contains("air"))){
+                                itemName = itemName.replaceAll("_", " ");
+                                Putils.itemName = itemName;
+                                Putils.rawId = rawId;
+                                MinecraftClient.getInstance().player.networkHandler.sendChatCommand("qs find "+itemName.replaceAll("_", " "));
+                            }
+
+                        System.out.println(itemName + rawId);
+                    }
+
+
+                }
 
                 if (!slot2.hasStack() || button != 2) break InventoryParse;
                 ItemStack itemStack = slot2.getStack();

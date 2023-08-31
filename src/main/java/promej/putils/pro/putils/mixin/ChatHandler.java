@@ -5,26 +5,25 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;
 
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.datafixer.fix.EntityShulkerColorFix;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.EndermanEntity;
-import net.minecraft.entity.mob.ShulkerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.message.MessageSignatureData;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import promej.putils.pro.putils.Putils;
+import promej.putils.pro.putils.entity.FakeAllayEntity;
+import promej.putils.pro.putils.entity.FakeAllayManager;
 import promej.putils.pro.putils.sounds.ModSounds;
-
-import javax.swing.text.html.parser.Entity;
 
 @Mixin(value={ChatHud.class})
 public class ChatHandler {
+
+
     @Inject(method={"addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;ILnet/minecraft/client/gui/hud/MessageIndicator;Z)V"}, at={@At(value="HEAD")})
     private void addMessage(Text message, MessageSignatureData signature, int ticks, MessageIndicator indicator, boolean refresh, CallbackInfo ci){
         String nickName = MinecraftClient.getInstance().player.getName().getString();
@@ -57,15 +56,43 @@ public class ChatHandler {
             e.printStackTrace();
         }
 
-        if (string.contains("devmes")) {
-            World world = MinecraftClient.getInstance().world;
-            ClientPlayerEntity player = MinecraftClient.getInstance().player;
-            ShulkerEntity shulkerEntity = new ShulkerEntity(EntityType.SHULKER, world);
-            shulkerEntity.setPosition(player.getX(), player.getY(), player.getZ());
-            //shulkerEntity.addStatusEffect()
-            world.spawnEntity(shulkerEntity);
+
+        if(string.contains("Ближайший магазин, соответствующий")){
+          FakeAllayManager.clear();
+          String[] list = message.getString().split("\n");
+          for(String item : list){
+              if(item.contains("x:")){
+
+
+
+                  String x = item.split("x:")[1].split(" ")[0];
+                  String y = item.split("y:")[1].split(" ")[0];
+                  String z = item.split("z:")[1].split(" ")[0];
+
+                  String name = "Фиксик";
+                  Item itemIco = Item.byRawId(Putils.rawId);
+
+                  ItemStack itemStack = new ItemStack(itemIco);
+
+                  FakeAllayManager.add(name, itemStack,  Double.parseDouble(x)+0.5, Double.parseDouble(y)+1, Double.parseDouble(z)+0.5);
+
+
+              }
+          }
+
         }
 
+        if (string.contains("devmes")) {
+
+
+
+        }
+
+    }
+
+   private void spawnFakeAllay(String name, ItemStack item, double x, double y, double z){
+       FakeAllayEntity fakeAllayEntity = new FakeAllayEntity(name, item, x, y, z);
+       fakeAllayEntity.spawn();
     }
 
     private void playSound(SoundEvent soundEvent) {

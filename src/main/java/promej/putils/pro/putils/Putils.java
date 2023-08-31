@@ -18,22 +18,25 @@ import promej.putils.pro.putils.config.buttons.PUButton;
 import promej.putils.pro.putils.handlers.JoinServerHandler;
 import promej.putils.pro.putils.sounds.ModSounds;
 
+import java.nio.charset.StandardCharsets;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Putils implements ModInitializer {
-
-
+    public static String itemName = "air";
+    public  static int rawId = 0;
+    public static MinecraftClient mc;
 
 
     @Override
     public void onInitialize() {
+        mc = MinecraftClient.getInstance();
+
         ModConfigs.registerConfigs();
 
         ButtonsConfig.loadButtonsFromConfig();
 
         PUButtonsList buttonsList = ButtonsConfig.getButtonsList();
-
-
 
         ModSounds.init();
 
@@ -54,8 +57,12 @@ public class Putils implements ModInitializer {
                         row++;
                     }
 
+                    byte[] contents = pubutton.getName().getBytes(StandardCharsets.UTF_8);
+                    String pubuttonname = new String(contents, StandardCharsets.UTF_16);
 
-                    MinecraftClient.getInstance().player.sendMessage(Text.literal(pubutton.getName()));
+                    System.out.println(pubuttonname);
+
+                    // MinecraftClient.getInstance().player.sendMessage(Text.literal(pubutton.getName()));
                     PUtilsButtonWidget buttonWidget = new PUtilsButtonWidget((HandledScreen)screen, index, row, pubutton.getName(), Item.byRawId(pubutton.getItemId()), button ->  MinecraftClient.getInstance().player.networkHandler.sendChatCommand(pubutton.getCommand()));
                     Screens.getButtons(screen).add(buttonWidget);
                     index++;

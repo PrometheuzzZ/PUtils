@@ -70,13 +70,12 @@ public class ModConfigs {
     private static void createConfigs() {
 
 
-
         configs.addKeyValuePair(new Pair<>("BUTTONS", defaultButtons), "");
 
     }
 
     private static void assignConfigs() {
-        BUTTONS = CONFIG.getOrDefault("BUTTONS", "Nothing");
+        BUTTONS = CONFIG.getOrDefault("BUTTONS", defaultButtons);
 
 
         System.out.println("All " + configs.getConfigsList().size() + " have been set properly");

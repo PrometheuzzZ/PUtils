@@ -10,7 +10,9 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class SimpleConfig {
@@ -98,13 +100,15 @@ public class SimpleConfig {
     }
 
     private void loadConfig() throws IOException {
-        Scanner reader = new Scanner( request.file );
         String allConfig = "";
-        for( int line = 1; reader.hasNextLine(); line ++ ) {
-            byte[] contents = reader.nextLine().getBytes(StandardCharsets.UTF_16);
-            String s = new String(contents, StandardCharsets.UTF_8);
-            allConfig += s;
+        List<String> alllines = Files.readAllLines(Paths.get(request.file.getAbsolutePath()), StandardCharsets.UTF_8);
+
+        for(String line : alllines) {
+            allConfig += line;
         }
+
+
+        System.out.println(allConfig);
         config.put( "BUTTONS", allConfig );
     }
 
