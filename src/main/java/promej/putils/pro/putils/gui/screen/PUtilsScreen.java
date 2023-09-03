@@ -1,4 +1,4 @@
-package promej.putils.pro.putils.GUI.screen;
+package promej.putils.pro.putils.gui.screen;
 
 
 import io.github.cottonmc.cotton.gui.GuiDescription;

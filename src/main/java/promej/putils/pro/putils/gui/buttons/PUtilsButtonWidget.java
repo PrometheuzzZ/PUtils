@@ -1,4 +1,4 @@
-package promej.putils.pro.putils.GUI.buttons;
+package promej.putils.pro.putils.gui.buttons;
 
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -11,10 +11,7 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
-import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;

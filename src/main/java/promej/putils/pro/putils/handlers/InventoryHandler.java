@@ -1,10 +1,8 @@
-package promej.putils.pro.putils.mixin;
+package promej.putils.pro.putils.handlers;
 
-import blue.endless.jankson.annotation.Nullable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.BookEditScreen;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,55 +12,45 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Hand;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import promej.putils.pro.putils.Putils;
+import promej.putils.pro.putils.mixin.HandledScreen;
 import promej.putils.pro.putils.utils.EnchantReplace;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static promej.putils.pro.putils.Putils.mc;
+public class InventoryHandler {
 
-@Mixin(value={HandledScreen.class}, priority=1)
-public abstract class InventoryHandler {
     private static final Item[] SHULKER_BOX_ITEMS = new Item[]{Items.SHULKER_BOX, Items.WHITE_SHULKER_BOX, Items.ORANGE_SHULKER_BOX, Items.MAGENTA_SHULKER_BOX, Items.LIGHT_BLUE_SHULKER_BOX, Items.YELLOW_SHULKER_BOX, Items.LIME_SHULKER_BOX, Items.PINK_SHULKER_BOX, Items.GRAY_SHULKER_BOX, Items.LIGHT_GRAY_SHULKER_BOX, Items.CYAN_SHULKER_BOX, Items.PURPLE_SHULKER_BOX, Items.BLUE_SHULKER_BOX, Items.BROWN_SHULKER_BOX, Items.GREEN_SHULKER_BOX, Items.RED_SHULKER_BOX, Items.BLACK_SHULKER_BOX};
 
-    @Shadow
-    @Nullable
-    protected abstract Slot getSlotAt(double var1, double var3);
 
-    @Inject(method={"mouseClicked"}, at={@At(value="HEAD")}, cancellable=true)
-    private void injected(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
+    public static void openInventory(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir, Slot slot){
         InventoryParse: {
             Inventory inventory = MinecraftClient.getInstance().player.getInventory();
 
             try {
                 NbtList loreList = new NbtList();
 
-                Slot slot2 = this.getSlotAt(mouseX, mouseY);
-               // System.out.println(slot2.id);
+                Slot slotClick = slot;
 
 
-                if (slot2.id == 1  && button == 0){
+                if (slotClick.id == 1  && button == 0){
 
-                    ItemStack mainHand = slot2.getStack();
+                    ItemStack mainHand = slotClick.getStack();
 
                     if(mainHand != null){
                         String itemName = mainHand.getItem().getName().toString().split("minecraft.")[1].split("',")[0];
                         int rawId = Item.getRawId(mainHand.getItem());
 
 
-                            if(!(itemName.contains("air"))){
-                                itemName = itemName.replaceAll("_", " ");
-                                Putils.itemName = itemName;
-                                Putils.rawId = rawId;
-                                MinecraftClient.getInstance().player.networkHandler.sendChatCommand("qs find "+itemName.replaceAll("_", " "));
-                            }
+                        if(!(itemName.contains("air"))){
+                            itemName = itemName.replaceAll("_", " ");
+                            Putils.itemName = itemName;
+                            Putils.rawId = rawId;
+                            MinecraftClient.getInstance().player.networkHandler.sendChatCommand("qs find "+itemName.replaceAll("_", " "));
+                        }
 
                         System.out.println(itemName + rawId);
                     }
@@ -70,10 +58,10 @@ public abstract class InventoryHandler {
 
                 }
 
-                if (!slot2.hasStack() || button != 2) break InventoryParse;
-                ItemStack itemStack = slot2.getStack();
+                if (!slotClick.hasStack() || button != 2) break InventoryParse;
+                ItemStack itemStack = slotClick.getStack();
 
-                 if (true) {
+                if (true) {
                     //NbtList loreList = new NbtList();
                     int id = Item.getRawId(itemStack.getItem());
                     loreList.add(NbtString.of(("{\"extra\":[{\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false,\"color\":\"white\",\"text\":\"ID: "+id+" \"}],\"text\":\"\"}")));
@@ -109,14 +97,14 @@ public abstract class InventoryHandler {
                     //itemStack.getNbt().getCompound("display").put("Lore", loreList);
                     //break InventoryParse;
                 }
-                if (InventoryHandler.isShalker(itemStack)) {
-                    List<ItemStack> itemStacks = InventoryHandler.getItemsInContainer(itemStack);
+                if (isShalker(itemStack)) {
+                    List<ItemStack> itemStacks = getItemsInContainer(itemStack);
                     if (itemStacks.size() > 0) {
                         for (int i = 0; i < itemStacks.size(); ++i) {
                             inventory.setStack(i + 9, itemStacks.get(i));
                         }
                     }
-                   // break InventoryParse;
+                    // break InventoryParse;
                 }
                 if (itemStack.getItem() == Items.WRITTEN_BOOK) {
                     MinecraftClient.getInstance().setScreen(new BookScreen(BookScreen.Contents.create(itemStack)));
@@ -193,7 +181,7 @@ public abstract class InventoryHandler {
                                 enchantID = (enchantID).split(":")[1] + " (Не переведено)";
                             }
                             String enchantLVL = book ? String.valueOf(enchant.getShort("lvl")) : String.valueOf(enchant.getInt("lvl"));
-                            enchantLVL = InventoryHandler.getEnchantLevelStr(enchantLVL);
+                            enchantLVL = getEnchantLevelStr(enchantLVL);
                             if ((enchantID).contains("Артефакт")) {
                                 enchantLVL = " ";
                             }
@@ -295,4 +283,5 @@ public abstract class InventoryHandler {
         }
         return str.substring(0, str.length() - n);
     }
+
 }

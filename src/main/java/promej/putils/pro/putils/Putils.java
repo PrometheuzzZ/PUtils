@@ -8,9 +8,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.item.Item;
-import net.minecraft.text.Text;
-import promej.putils.pro.putils.GUI.buttons.PUtilsButtonWidget;
-import promej.putils.pro.putils.GUI.screen.PUtilsScreen;
+import promej.putils.pro.putils.gui.buttons.PUtilsButtonWidget;
+import promej.putils.pro.putils.gui.screen.PUtilsScreen;
 import promej.putils.pro.putils.config.ButtonsConfig;
 import promej.putils.pro.putils.config.ModConfigs;
 import promej.putils.pro.putils.config.buttons.PUButtonsList;
@@ -19,8 +18,6 @@ import promej.putils.pro.putils.handlers.JoinServerHandler;
 import promej.putils.pro.putils.sounds.ModSounds;
 
 import java.nio.charset.StandardCharsets;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Putils implements ModInitializer {
     public static String itemName = "air";
@@ -43,6 +40,7 @@ public class Putils implements ModInitializer {
         ClientPlayConnectionEvents.JOIN.register(new JoinServerHandler());
 
 
+
         ScreenEvents.AFTER_INIT.register((minecraftClient, screen, width, height) -> {
 
             if (screen instanceof HandledScreen) {
@@ -62,33 +60,11 @@ public class Putils implements ModInitializer {
 
                     System.out.println(pubuttonname);
 
-                    // MinecraftClient.getInstance().player.sendMessage(Text.literal(pubutton.getName()));
                     PUtilsButtonWidget buttonWidget = new PUtilsButtonWidget((HandledScreen)screen, index, row, pubutton.getName(), Item.byRawId(pubutton.getItemId()), button ->  MinecraftClient.getInstance().player.networkHandler.sendChatCommand(pubutton.getCommand()));
                     Screens.getButtons(screen).add(buttonWidget);
                     index++;
                 }
 
-            /*    PUtilsButtonWidget enderOpenButtonWidget = new PUtilsButtonWidget((HandledScreen)screen, 0, 0, "Эндер-сундук", Item.byRawId(359), button ->  MinecraftClient.getInstance().player.networkHandler.sendChatCommand("ender") );
-                PUtilsButtonWidget workbenchButtonWidget = new PUtilsButtonWidget((HandledScreen)screen, 1, 0, "Верстак", Item.byRawId(278), pressActionCommand("workbench"));
-                PUtilsButtonWidget anvilButtonWidget = new PUtilsButtonWidget((HandledScreen)screen, 2, 0, "Наковальня", Item.byRawId(397), pressActionCommand("anvil"));
-                PUtilsButtonWidget tochiloButtonWidget = new PUtilsButtonWidget((HandledScreen)screen, 3, 0, "Точило", Item.byRawId(1159), pressActionCommand("grindstone"));
-                PUtilsButtonWidget trashButtonWidget = new PUtilsButtonWidget((HandledScreen)screen, 4, 0, "Мусорка", Item.byRawId(870), pressActionCommand("dispose"));
-                PUtilsButtonWidget daylyButtonWidget = new PUtilsButtonWidget((HandledScreen)screen, 5, 0, "Ежедневный бонус", Item.byRawId(955), pressActionCommand("dayly1"));
-                //PUtilsButtonWidget settingButtonWidget = new PUtilsButtonWidget((HandledScreen)screen, 6, 0,"Быстрое меню", Items.BARRIER, pressActionScreen(new PUtilsScreen(new FastMenu())));
-
-
-                PUtilsButtonWidget vaultButtonWidget = new PUtilsButtonWidget((HandledScreen)screen, 0, 1, "Хранилище клана", Item.byRawId(277), pressActionCommand("clan chest"));
-                PUtilsButtonWidget shopButtonWidget = new PUtilsButtonWidget((HandledScreen)screen, 1, 1, "Магазин", Item.byRawId(1154), pressActionCommand("shop"));
-
-                Screens.getButtons(screen).add(enderOpenButtonWidget);
-                Screens.getButtons(screen).add(workbenchButtonWidget);
-                Screens.getButtons(screen).add(vaultButtonWidget);
-                Screens.getButtons(screen).add(anvilButtonWidget);
-                Screens.getButtons(screen).add(trashButtonWidget);
-                Screens.getButtons(screen).add(daylyButtonWidget);
-                Screens.getButtons(screen).add(tochiloButtonWidget);
-                Screens.getButtons(screen).add(shopButtonWidget);
-                //Screens.getButtons(screen).add(settingButtonWidget); */
             }
 
         });

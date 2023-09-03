@@ -1,4 +1,4 @@
-package promej.putils.pro.putils.GUI;
+package promej.putils.pro.putils.gui;
 
 import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;

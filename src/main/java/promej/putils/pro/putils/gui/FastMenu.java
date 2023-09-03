@@ -1,4 +1,4 @@
-package promej.putils.pro.putils.GUI;
+package promej.putils.pro.putils.gui;
 
 import io.github.cottonmc.cotton.gui.GuiDescription;
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
@@ -11,7 +11,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.text.Text;
-import promej.putils.pro.putils.GUI.screen.PUtilsScreen;
+import promej.putils.pro.putils.gui.screen.PUtilsScreen;
 
 public class FastMenu
         extends LightweightGuiDescription {

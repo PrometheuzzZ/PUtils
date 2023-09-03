@@ -29,9 +29,6 @@ public class FakeAllayManager {
 
     public static void add(String name, ItemStack itemStack, double x, double y, double z) {
         FakeAllayEntity fakeAllayEntity = new FakeAllayEntity(name, itemStack, x, y, z);
-
-        //fakePlayer.getInventory().armor.add(0, new ItemStack(Items.ANVIL));
-
         fakeAllayEntity.spawn();
         ENTITIES.add(fakeAllayEntity);
     }
