@@ -1,9 +1,11 @@
 package promej.putils.pro.putils;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
+import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -14,6 +16,7 @@ import promej.putils.pro.putils.config.ButtonsConfig;
 import promej.putils.pro.putils.config.ModConfigs;
 import promej.putils.pro.putils.config.buttons.PUButtonsList;
 import promej.putils.pro.putils.config.buttons.PUButton;
+import promej.putils.pro.putils.handlers.ChatHandler;
 import promej.putils.pro.putils.handlers.JoinServerHandler;
 import promej.putils.pro.putils.sounds.ModSounds;
 
@@ -27,6 +30,7 @@ public class Putils implements ModInitializer {
 
     @Override
     public void onInitialize() {
+
         mc = MinecraftClient.getInstance();
 
         ModConfigs.registerConfigs();
@@ -38,8 +42,6 @@ public class Putils implements ModInitializer {
         ModSounds.init();
 
         ClientPlayConnectionEvents.JOIN.register(new JoinServerHandler());
-
-
 
         ScreenEvents.AFTER_INIT.register((minecraftClient, screen, width, height) -> {
 

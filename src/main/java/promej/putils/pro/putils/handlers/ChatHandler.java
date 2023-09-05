@@ -1,42 +1,43 @@
 package promej.putils.pro.putils.handlers;
 
-import com.google.common.collect.ComparisonChain;
-import com.google.common.collect.Ordering;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.MessageIndicator;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.message.MessageSignatureData;
-import net.minecraft.scoreboard.Team;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.text.Text;
-import net.minecraft.world.GameMode;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import promej.putils.pro.putils.Putils;
-import promej.putils.pro.putils.entity.FakeAllayManager;
-import promej.putils.pro.putils.sounds.ModSounds;
+        import com.google.common.collect.ComparisonChain;
+        import com.google.common.collect.Ordering;
+        import net.fabricmc.api.EnvType;
+        import net.fabricmc.api.Environment;
+        import net.fabricmc.loader.api.FabricLoader;
+        import net.minecraft.client.MinecraftClient;
+        import net.minecraft.client.gui.hud.MessageIndicator;
+        import net.minecraft.client.network.ClientPlayNetworkHandler;
+        import net.minecraft.client.network.PlayerListEntry;
+        import net.minecraft.client.sound.PositionedSoundInstance;
+        import net.minecraft.item.Item;
+        import net.minecraft.item.ItemStack;
+        import net.minecraft.network.message.MessageSignatureData;
+        import net.minecraft.scoreboard.Team;
+        import net.minecraft.sound.SoundEvent;
+        import net.minecraft.sound.SoundEvents;
+        import net.minecraft.text.Text;
+        import net.minecraft.world.GameMode;
+        import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+        import promej.putils.pro.putils.Putils;
+        import promej.putils.pro.putils.entity.FakeAllayManager;
+        import promej.putils.pro.putils.sounds.ModSounds;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Comparator;
-import java.util.List;
-import java.util.logging.Logger;
+        import java.io.*;
+        import java.nio.file.Files;
+        import java.nio.file.Path;
+        import java.util.Comparator;
+        import java.util.List;
+        import java.util.logging.Logger;
 
 public class ChatHandler {
 
 
 
-    public static void newMessage(Text message, MessageSignatureData signature, int ticks, MessageIndicator indicator, boolean refresh, CallbackInfo ci){
+    public static void newMessage(Text message){
         String nickName = MinecraftClient.getInstance().player.getName().getString();
 
-        String string = message.toString();
+        String string = message.getString();
 
         try {
 
@@ -56,10 +57,12 @@ public class ChatHandler {
             if (string.contains("Ⓓ") && (string.split("››")[1]).contains(nickName)) {
                 playSound(ModSounds.NEW_GLOBAL_PM);
             }
-            if (string.contains("_PrometheuZ_ зашел на сервер")) {
+            if (string.contains("+ [LEGEND] _PrometheuZ_")) {
                 playSound(ModSounds.PJ_WELCOME);
             }
-
+            if (string.contains("послал запрос на телепортацию, чтобы переместиться к вам.")) {
+                playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT);
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -94,12 +97,12 @@ public class ChatHandler {
 
 
 
-             try {
-                 String nick = message.getString().split("saveskin ")[1];
-                 saveSkin(nick);
-             } catch (Exception e){
-                 MinecraftClient.getInstance().player.sendMessage(Text.literal("[PUtils] Введите ник."));
-             }
+            try {
+                String nick = message.getString().split("saveskin ")[1];
+                saveSkin(nick);
+            } catch (Exception e){
+                MinecraftClient.getInstance().player.sendMessage(Text.literal("[PUtils] Введите ник."));
+            }
 
 
 

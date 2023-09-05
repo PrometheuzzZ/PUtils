@@ -4,8 +4,8 @@
   "package": "promej.putils.pro.putils.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ChatHud",
-    "HandledScreen"
+    "HandledScreenHook",
+    "ChatHook"
   ],
   "client": [],
   "injectors": {

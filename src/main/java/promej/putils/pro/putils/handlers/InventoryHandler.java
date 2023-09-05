@@ -14,7 +14,6 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import promej.putils.pro.putils.Putils;
-import promej.putils.pro.putils.mixin.HandledScreen;
 import promej.putils.pro.putils.utils.EnchantReplace;
 
 import java.util.ArrayList;
